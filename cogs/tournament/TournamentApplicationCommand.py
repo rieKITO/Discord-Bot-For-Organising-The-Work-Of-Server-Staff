@@ -1,6 +1,6 @@
 from disnake.ext import commands
 
-from cogs.tournament.button_view import TournamentApplicationButton
+from cogs.views.TournamentButtonView import TournamentApplicationButton
 
 import config
 

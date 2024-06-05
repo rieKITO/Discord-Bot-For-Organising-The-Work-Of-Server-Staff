@@ -66,18 +66,18 @@ COGS_DIR = BASE_DIR / "cogs"
 
 # COG EXTENSIONS
 EXTENSIONS = [
-    'cogs.staff_commands.action',
+    'cogs.default_user_commands.Report',
+    'cogs.default_user_commands.Ticket',
+    'cogs.models.DataBase',
+    'cogs.staff_commands.Action',
     'cogs.staff_commands.HighStaffCommands',
     'cogs.staff_commands.StaffProfile',
     'cogs.staff_commands.StaffTop',
-    'cogs.tournament.tournament_application_command',
-    'cogs.CheckPermissions',
-    'cogs.CogsControl',
-    'cogs.DataBase',
-    'cogs.ErrorHandling',
-    'cogs.report',
-    'cogs.TeamRecruitment',
-    'cogs.ticket'
+    'cogs.staff_commands.TeamRecruitment',
+    'cogs.tournament.TournamentApplicationCommand',
+    'cogs.utils.CogsControl',
+    'cogs.utils.ErrorHandling',
+    'cogs.tournament.TournamentApplicationCommand'
 ]
 
 # STAFF ROLES LIST
