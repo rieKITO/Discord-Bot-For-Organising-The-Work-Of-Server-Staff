@@ -2,13 +2,12 @@ import disnake
 from disnake.ext import commands
 
 import config
-from cogs.DataBase import Data
+from cogs.models.DataBase import Data
 
 class StaffTop(commands.Cog):
     
     def __init__(self, bot):
         self.bot = bot
-
 
     @commands.slash_command(description = "Посмотреть недельную статистику модераторов.")
     @commands.has_any_role(config.MODERATOR_ROLE_ID, *config.HIGHER_STAFF_ROLES)
@@ -28,7 +27,6 @@ class StaffTop(commands.Cog):
         
         await interaction.response.send_message(embed = embed)
 
-
     @commands.slash_command(description = "Посмотреть недельную статистику хелперов.")
     @commands.has_any_role(config.HELPER_ROLE_ID, *config.HIGHER_STAFF_ROLES)
     async def helper_top(self, interaction: disnake.CommandInteraction):
@@ -47,7 +45,6 @@ class StaffTop(commands.Cog):
         
         await interaction.response.send_message(embed = embed)
 
-
     @commands.slash_command(description = "Посмотреть недельную статистику ивентеров.")
     @commands.has_any_role(config.EVENTER_ROLE_ID, *config.HIGHER_STAFF_ROLES)
     async def eventer_top(self, interaction: disnake.CommandInteraction):
@@ -65,7 +62,6 @@ class StaffTop(commands.Cog):
             i += 1
         
         await interaction.response.send_message(embed = embed)
-
 
 def setup(bot):
     bot.add_cog(StaffTop(bot))

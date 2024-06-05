@@ -6,13 +6,13 @@ from disnake.utils import get
 
 import config
 
-from cogs.models.models import User
-from cogs.models.models import StaffUser
-from cogs.DataBase import Data
-from cogs.models.ActionView import ActionButtons
-from cogs.models.ActionView import AddOrRemoveChoice
-from cogs.models.ActionView import PaginationActionView
-from cogs.models.ActionView import Choice
+from cogs.models.Models import User
+from cogs.models.Models import StaffUser
+from cogs.models.DataBase import Data
+from cogs.views.ActionButtonsView import ActionButtonsView
+from cogs.views.AddOrRemoveChoiceView import AddOrRemoveChoiceView
+from cogs.views.ActionPaginatorView import ActionPaginatorView
+from cogs.views.YesOrNoChoiceView import YesOrNoChoiceView
 
 class Action(commands.Cog):
 
@@ -20,7 +20,7 @@ class Action(commands.Cog):
         self.bot = bot
 
     
-    async def remove_specific_buttons_action(self, view: ActionButtons, interaction: disnake.CommandInteraction, _user):
+    async def remove_specific_buttons_action(self, view: ActionButtonsView, interaction: disnake.CommandInteraction, _user):
         ObjectInteraction = StaffUser(interaction.user.id)
 
         if ObjectInteraction.curator == False and ObjectInteraction.developer == False and ObjectInteraction.admin == False:
@@ -70,7 +70,7 @@ class Action(commands.Cog):
                 view.remove_item(view.helper_points_change)
                 view.remove_item(view.eventer_points_change)
 
-    async def remove_specific_buttons_paginator(self, view: PaginationActionView, interaction: disnake.CommandInteraction, _user):
+    async def remove_specific_buttons_paginator(self, view: ActionPaginatorView, interaction: disnake.CommandInteraction, _user):
         ObjectInteraction = StaffUser(interaction.user.id)
 
         if view.type == "HistoryOfPunishments":
@@ -110,7 +110,7 @@ class Action(commands.Cog):
         
         ObjectUser = User(_user.id)
 
-        view = ActionButtons(interaction)
+        view = ActionButtonsView(interaction)
         await self.remove_specific_buttons_action(view, interaction, _user)
         await interaction.response.send_message(embed = actionEmbed, view = view)
 
@@ -430,7 +430,7 @@ class Action(commands.Cog):
                             color = 0x292b2e,
                         )
 
-                        choiceView = Choice(interaction)
+                        choiceView = YesOrNoChoiceView(interaction)
                         await interaction.edit_original_message(embed = choiceEmbed, view = choiceView)
                         await choiceView.wait()
 
@@ -634,7 +634,7 @@ class Action(commands.Cog):
                 data = ObjectUser.HistoryOfPunishments
 
                 if data:
-                    view = PaginationActionView(interaction)
+                    view = ActionPaginatorView(interaction)
                     view.type = "HistoryOfPunishments"
                     view.user = _user
                     view.data = data
@@ -691,7 +691,7 @@ class Action(commands.Cog):
                 data = ObjectStaffUser.HistoryOfReprimands
 
                 if data:
-                    view = PaginationActionView(interaction)
+                    view = ActionPaginatorView(interaction)
                     view.type = "HistoryOfReprimands"
                     view.user = _user
                     view.data = data
@@ -748,7 +748,7 @@ class Action(commands.Cog):
 
                 if data:
 
-                    view = PaginationActionView(interaction)
+                    view = ActionPaginatorView(interaction)
                     view.type = "HistoryOfNicknames"
                     view.user = _user
                     view.data = data
@@ -866,7 +866,7 @@ class Action(commands.Cog):
 
             elif view.value == "StaffPointsChange":
 
-                view = AddOrRemoveChoice(interaction)
+                view = AddOrRemoveChoiceView(interaction)
                 await interaction.edit_original_message(view = view)
                 await view.wait()
 
@@ -950,7 +950,7 @@ class Action(commands.Cog):
 
             elif view.value == "ModeratorPointsChange":
 
-                view = AddOrRemoveChoice(interaction)
+                view = AddOrRemoveChoiceView(interaction)
                 await interaction.edit_original_message(view = view)
                 await view.wait()
 
@@ -1000,7 +1000,7 @@ class Action(commands.Cog):
             
             elif view.value == "HelperPointsChange":
 
-                view = AddOrRemoveChoice(interaction)
+                view = AddOrRemoveChoiceView(interaction)
                 await interaction.edit_original_message(view = view)
                 await view.wait()
 
@@ -1050,7 +1050,7 @@ class Action(commands.Cog):
 
             elif view.value == "EventerPointsChange":
 
-                view = AddOrRemoveChoice(interaction)
+                view = AddOrRemoveChoiceView(interaction)
                 await interaction.edit_original_message(view = view)
                 await view.wait()
 
@@ -1207,35 +1207,6 @@ class Action(commands.Cog):
                 )
 
                 await interaction.edit_original_message(embed = cancelEmbed, view = None)
-
-    # перенести
-    @commands.slash_command(description = "Посмотреть профиль.")
-    async def profile(self, interaction: disnake.CommandInteraction, user: disnake.User = None):
-        _user = interaction.user
-
-        if user:
-            _user = user
-            
-        ObjectUser = User(_user.id)
-        CountOfWarns = 0
-        for value in ObjectUser.warns:
-            CountOfWarns += 1 
-        
-        profileEmbed = disnake.Embed(
-            title = f"ПРОФИЛЬ - {_user.name}#{_user.discriminator}",
-            description = f"**Баланс:** {ObjectUser.balance}\n" +
-                          f"**Голосовой онлайн:** {ObjectUser.voice_time}\n" +
-                          f"**Бан:** {ObjectUser.ban}\n" +  
-                          f"**Варны:** {CountOfWarns}",
-            color = 0x292b2e,
-            timestamp = datetime.datetime.now(),
-        )
-        profileEmbed.set_thumbnail(_user.avatar)
-        profileEmbed.set_footer(text = f"ID пользователя: {_user.id}", icon_url = _user.avatar)
-        profileEmbed.set_image(url = "https://i.imgur.com/QzB7q9J.png")
-        
-        await interaction.response.send_message(embed = profileEmbed)
-
 
 def setup(bot):
     bot.add_cog(Action(bot))

@@ -2,13 +2,12 @@ import disnake
 from disnake.ext import commands
 
 import config
-from cogs.DataBase import Data
+from cogs.models.DataBase import Data
 
 class StaffProfile(commands.Cog):
     
     def __init__(self, bot):
         self.bot = bot
-
 
     @commands.slash_command(description = "Посмотреть профиль модератора.")
     @commands.has_any_role(config.MODERATOR_ROLE_ID, *config.HIGHER_STAFF_ROLES)
@@ -20,7 +19,6 @@ class StaffProfile(commands.Cog):
         moderator = Data.staffUsers.find_one({"_id": _user.id, "moderator": True})
 
         if moderator:
-                    
             embed = disnake.Embed(
                 title = f"Профиль модератора - {_user.name}:",
                 color = 0x292b2e,
@@ -30,14 +28,12 @@ class StaffProfile(commands.Cog):
             embed.add_field(name = '> Баллы модератора:', value = f"```{moderator['WeekModeratorPoints']}```", inline = True)
             
         else:
-
             embed = disnake.Embed(
                 description = f"Пользователь {_user.mention} ({_user.name}#{_user.discriminator}) не является модератором!",
                 color = 0x292b2e,
             )
         
         await interaction.response.send_message(embed = embed)
-
 
     @commands.slash_command(description = "Посмотреть профиль хелпера.")
     @commands.has_any_role(config.HELPER_ROLE_ID, *config.HIGHER_STAFF_ROLES)
@@ -49,7 +45,6 @@ class StaffProfile(commands.Cog):
         helper = Data.staffUsers.find_one({"_id": _user.id, "helper": True})
 
         if helper:
-                    
             embed = disnake.Embed(
                 title = f"Профиль хелпера - {_user.name}:",
                 color = 0x292b2e,
@@ -59,14 +54,12 @@ class StaffProfile(commands.Cog):
             embed.add_field(name = '> Баллы хелпера:', value = f"```{helper['WeekHelperPoints']}```", inline = True)
             
         else:
-
             embed = disnake.Embed(
                 description = f"Пользователь {_user.mention} ({_user.name}#{_user.discriminator}) не является хелпером!",
                 color = 0x292b2e,
             )
         
         await interaction.response.send_message(embed = embed)
-
 
     @commands.slash_command(description = "Посмотреть профиль ивентера.")
     @commands.has_any_role(config.EVENTER_ROLE_ID, *config.HIGHER_STAFF_ROLES)
@@ -78,7 +71,6 @@ class StaffProfile(commands.Cog):
         eventer = Data.staffUsers.find_one({"_id": _user.id, "eventer": True})
 
         if eventer:
-                    
             embed = disnake.Embed(
                 title = f"Профиль ивентера - {_user.name}:",
                 color = 0x292b2e,
@@ -88,7 +80,6 @@ class StaffProfile(commands.Cog):
             embed.add_field(name = '> Баллы ивентера:', value = f"```{eventer['WeekEventerPoints']}```", inline = True)
             
         else:
-
             embed = disnake.Embed(
                 description = f"Пользователь {_user.mention} ({_user.name}#{_user.discriminator}) не является ивентером!",
                 color = 0x292b2e,

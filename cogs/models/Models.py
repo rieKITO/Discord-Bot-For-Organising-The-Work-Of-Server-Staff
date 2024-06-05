@@ -1,4 +1,4 @@
-from cogs.DataBase import Data
+from cogs.models.DataBase import Data
 
 class User(Data):
     def __init__(self, id):
