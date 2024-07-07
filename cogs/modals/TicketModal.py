@@ -1,5 +1,6 @@
 from typing import Optional
 import disnake
+import asyncio
 
 class TicketModal(disnake.ui.Modal):
     def __init__(self, event: asyncio.Event):
