@@ -77,7 +77,6 @@ EXTENSIONS = [
     'cogs.tournament.TournamentApplicationCommand',
     'cogs.utils.CogsControl',
     'cogs.utils.ErrorHandling',
-    'cogs.tournament.TournamentApplicationCommand'
 ]
 
 # STAFF ROLES LIST
